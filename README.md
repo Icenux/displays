@@ -5,7 +5,7 @@ Terminal UI for managing external monitor layout on **Sway** and **Hyprland** â€
 [![Platform](https://img.shields.io/badge/platform-Sway%20%2F%20Hyprland-blue?logo=linux&logoColor=white)](https://swaywm.org/)
 [![Language](https://img.shields.io/badge/language-Bash-green)](https://www.gnu.org/software/bash/)
 [![License](https://img.shields.io/badge/license-MIT-yellow)](https://opensource.org/license/MIT)
-[![Stars](https://img.shields.io/github/stars/Luquas95/displays?style=social)](https://github.com/Luquas95/displays)
+[![Stars](https://img.shields.io/github/stars/Icenux/displays?style=social)](https://github.com/Icenux/displays)
 
 ![displays running on Sway](docs/screenshot.png)
 
