@@ -60,6 +60,17 @@ Use `displays` to place and scale the output first, then point `wl-mirror` at it
 
 ## Installation
 
+From the Icenux package repository (Debian / Ubuntu / Mint) — later versions then arrive with `apt upgrade`:
+
+```bash
+sudo curl -fsSL https://icenux.github.io/icenux/icenux.asc -o /usr/share/keyrings/icenux.asc
+echo 'deb [signed-by=/usr/share/keyrings/icenux.asc] https://icenux.github.io/icenux/apt ./' \
+  | sudo tee /etc/apt/sources.list.d/icenux.list
+sudo apt update && sudo apt install displays
+```
+
+Or just the script:
+
 ```bash
 cp displays ~/.local/bin/
 chmod +x ~/.local/bin/displays
