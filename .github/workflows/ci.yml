@@ -52,7 +52,12 @@ jobs:
       - name: The packages contain the program and the right dependencies
         run: |
           cd dist/release
-          dpkg-deb -c displays_all.deb | grep -q ' ./usr/bin/displays$'
-          dpkg-deb -f displays_all.deb Depends | grep -q 'jq'
-          tar --zstd -tf displays-*.pkg.tar.zst | grep -q '^usr/bin/displays$'
-          tar --zstd -xOf displays-*.pkg.tar.zst .PKGINFO | grep -q '^depend = jq$'
+          # Capture each listing first: `tar -t | grep -q` under pipefail fails with SIGPIPE when grep exits early.
+          deb_files=$(dpkg-deb -c displays_all.deb)
+          deb_depends=$(dpkg-deb -f displays_all.deb Depends)
+          arch_files=$(tar --zstd -tf displays-*.pkg.tar.zst)
+          pkginfo=$(tar --zstd -xOf displays-*.pkg.tar.zst .PKGINFO)
+          grep -q ' ./usr/bin/displays$' <<< "$deb_files"
+          grep -q 'jq' <<< "$deb_depends"
+          grep -q '^usr/bin/displays$' <<< "$arch_files"
+          grep -q '^depend = jq$' <<< "$pkginfo"
