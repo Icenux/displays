@@ -161,7 +161,7 @@ parse_rule() {
   IFS=',' read -ra parts <<< "$rest"
   local i
   for i in "${!parts[@]}"; do
-    parts[$i]="${parts[$i]# }"; parts[$i]="${parts[$i]% }"
+    parts[i]="${parts[i]# }"; parts[i]="${parts[i]% }"
   done
 
   RULE_MODE="${parts[0]}"
@@ -308,6 +308,8 @@ wm_reload() {
 }
 
 wm_config_name() {
+  # Literal "~": this is text shown to the user, not a path to open.
+  # shellcheck disable=SC2088
   case "$WM" in
     sway)      echo "~/.config/sway/config" ;;
     hypr-lua)  echo "~/.config/hypr/monitors.lua" ;;
@@ -346,6 +348,8 @@ wire_sway() {
 
 wire_hypr_conf() {
   local hypr_conf="$HOME/.config/hypr/hyprland.conf"
+  # Literal "~" on purpose: it is written into hyprland.conf, and Hyprland expands it itself.
+  # shellcheck disable=SC2088
   local state_rel="~/.local/state/omarchy/displays/monitors.conf"
   local anchor='source = ~/.config/hypr/monitors.conf'
   local src_line="source = $state_rel"
@@ -655,7 +659,7 @@ mirror_to() {
 # Posle cely layout podle aktualniho OUTPUT/MODE/DIR. Pracuje s globalnimi
 # ISCALE/ESCALE, ktere uz jsou snapnute na prijatelne hodnoty.
 push_layout() {
-  local iw ih ew eh ow oh os edge n
+  local iw ih ew eh ow os edge n
 
   RULE_ORDER=(); RULE_MAP=()   # vzdy odrazi jen posledni volani, ne soucet napric apply()
 
@@ -716,7 +720,7 @@ push_layout() {
   for n in "${EXTERNALS[@]:-}"; do
     [[ -z $n || $n == "$EXTERNAL" ]] && continue
     os=$(snap_scale "$n" "$(cur_scale "$n")")
-    read -r ow oh < <(logical_size "$n" "$os")
+    read -r ow _ < <(logical_size "$n" "$os")
     place "$n" "$edge" 0 "$os"
     edge=$(( edge + ow ))
   done

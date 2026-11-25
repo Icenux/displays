@@ -69,6 +69,12 @@ echo 'deb [signed-by=/usr/share/keyrings/icenux.asc] https://icenux.github.io/ic
 sudo apt update && sudo apt install displays
 ```
 
+On Arch Linux, install the package from the [latest release](https://github.com/Icenux/displays/releases/latest). `wl-mirror` is listed as an optional dependency (see the Sway caveat below):
+
+```bash
+sudo pacman -U displays-X.Y.Z-1-any.pkg.tar.zst
+```
+
 Or just the script:
 
 ```bash
@@ -101,6 +107,17 @@ Every applied change is written to a state file (see the table above). On its fi
 ## Why not just edit the config by hand?
 
 You can, but you're guessing coordinates and scale values the compositor will silently adjust if they don't divide evenly into whole pixels. `displays` reads the real state back from the compositor, computes positions itself so the layout is always anchored with no gaps, and snaps scale to a value that survives — all with instant visual feedback instead of a reload-and-check loop.
+
+## Development
+
+The whole program is one Bash script, `displays`. CI (`.github/workflows/ci.yml`) runs on every pull request:
+
+```bash
+bash -n displays packaging/package.sh packaging/files/postinst.sh   # syntax
+shellcheck displays packaging/package.sh packaging/files/postinst.sh
+./displays --version
+bash packaging/package.sh "$(sed -n 's/^VERSION="\(.*\)"/\1/p' displays)"   # needs nfpm; builds the .deb and the Arch package
+```
 
 ## Contributors
 
